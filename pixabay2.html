@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>
+    </title>
+    <meta content="木桶布局 饥人谷" name="keyword">
+    <meta content="用木桶布局实现的图片搜索" name="description">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        header {
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        header input {
+            width: 220px;
+            padding: 5px;
+            outline: none;
+        }
+        
+        main {
+            margin: 10px;
+        }
+        
+        main::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        
+        main>figure {
+            float: left;
+            padding: 5px;
+            transition: all .4s;
+        }
+        
+        main>figure img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <input id="search-ipt" placeholder="enter picture name" type="text">
+    </header>
+    <main>
+        <!-- <figure>
+            <img src="https://cdn.pixabay.com/photo/2015/03/12/17/57/buddha-670573_150.jpg" alt="">
+        </figure> -->
+
+
+    </main>
+
+
+    <script>
+
+      // getData('beijing', function(data){
+      //   console.log(data)
+      //   getData('hangzhou', function(data){
+      //     console.log(data)
+      //         getData('shanghai', function(data){
+      //           console.log(data)
+      //         })
+      //   })
+      // })
+
+      var mainNode = document.querySelector('main')
+      var mainNodeWidth = parseFloat(getComputedStyle(mainNode).width)
+      var baseHeight = 200
+
+      var rowList = []
+      var rowTotalWidth = 0
+
+
+      document.body.onresize = throttle(function() {
+        mainNode.innerHTML = ''
+        mainNodeWidth = parseFloat(getComputedStyle(mainNode).width)
+        getData('beijing')
+          .then(render)
+          .catch(function(err){
+            console.log(err)
+          })
+        }, 200)
+
+
+      getData('beijing')
+          .then(render)
+          .catch(function(err){
+            console.log(err)
+          })
+
+
+        function throttle(fn, delay) {
+            var timer = null
+            return function() {
+                var context = this
+                clearTimeout(timer)
+                timer = setTimeout(function() {
+                    fn.apply(context, arguments);
+                }, delay)
+            }
+        }
+
+
+      function render(data){
+        data.hits.forEach(function(imgInfo){
+          
+          imgInfo.newHeight = baseHeight
+          imgInfo.newWidth = (imgInfo.webformatWidth / imgInfo.webformatHeight)*baseHeight
+          
+          if(imgInfo.newWidth + rowTotalWidth > mainNodeWidth){
+            layout(rowList, rowTotalWidth)
+            rowList = [imgInfo]
+            rowTotalWidth = imgInfo.newWidth
+          }else {
+            rowList.push(imgInfo)
+            rowTotalWidth += imgInfo.newWidth
+          }
+        })
+        layout(rowList, mainNodeWidth)
+        rowList = []
+        rowTotalWidth = 0
+
+
+        //  newWidth/newHeight = imgInfo.webformatWidth / imgInfo.webformatHeight
+
+        //  ?  = mainNodeWidth / totalWidth * 200
+
+
+      }
+        function layout(list, rowTotalWidth){
+
+          list.forEach(function(imgInfo){
+            var figureNode = document.createElement('figure')
+            var imgNode = document.createElement('img')
+            imgNode.src = imgInfo.webformatURL
+            figureNode.appendChild(imgNode)
+            var newHeight = (mainNodeWidth / rowTotalWidth)*baseHeight
+            figureNode.style.height = newHeight + 'px'
+            figureNode.style.width = (imgInfo.webformatWidth/imgInfo.webformatHeight) * newHeight + 'px'
+            mainNode.appendChild(figureNode)
+          })
+
+        }
+
+
+
+        function getData(keyword){
+          return new Promise(function(resolve, reject){
+            var data = {
+                key: '5856858-0ecb4651f10bff79efd6c1044',
+                q: keyword,
+                image_type: 'photo',
+                per_page: 20
+            }
+            var url = 'https://pixabay.com/api/?'
+            for(var key in data){
+              url += key + '=' + data[key] + '&'
+            }
+            var xhr = new XMLHttpRequest()
+            xhr.open('GET', url, true)
+            xhr.send()
+            xhr.onload = function(){
+              var json = JSON.parse(this.response)
+              resolve(json)
+            } 
+            xhr.onerror = function(){
+              reject('ajax error')
+            }           
+          })
+        }
+
+
+
+      /*
+
+      function getData(keyword, callback){
+        var data = {
+            key: '5856858-0ecb4651f10bff79efd6c1044',
+            q: keyword,
+            image_type: 'photo',
+            per_page: 20
+        }
+        var url = 'https://pixabay.com/api/?'
+        for(var key in data){
+          url += key + '=' + data[key] + '&'
+        }
+        var xhr = new XMLHttpRequest()
+        xhr.open('GET', url, true)
+        xhr.send()
+        xhr.onload = function(){
+          var json = JSON.parse(this.response)
+          callback(json)
+        }
+        
+      }
+      */
+
+
+
+
+    </script>
+</body>
+
+</html>
