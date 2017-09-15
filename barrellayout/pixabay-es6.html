@@ -6,7 +6,7 @@
     <title>
     </title>
     <meta content="木桶布局 饥人谷" name="keyword">
-    <meta content="用木桶布局实现的图片搜索" name="description">
+    <meta content="用木桶布局实现的图片搜索 by 若愚" name="description">
 
     <style>
         * {
@@ -80,7 +80,7 @@
 
 
         // 
-        class searchModule {
+        class Interaction {
             constructor() {
                 this.searchInput = document.querySelector('#search-ipt')
                 this.bind()
@@ -107,13 +107,13 @@
                 return document.body.scrollHeight - document.body.scrollTop - document.documentElement.clientHeight < 5
             }
         }
-        new searchModule()
+        new Interaction()
             // Event.on('search', e=>console.log(e.detail))
             // Event.on('resize', e=>console.log('resize'))
 
 
         // 加载数据的模块
-        class loadModule {
+        class Loader {
             constructor() {
                 this.page = 1
                 this.per_page = 10
@@ -170,11 +170,11 @@
                 return url + '?' + arr.join('&')
             }
         }
-        new loadModule()
+        new Loader()
 
 
 
-        class layoutModule {
+        class Barrel {
             constructor() {
                 this.mainNode = document.querySelector('main')
                 this.rowHeightBase = 200
@@ -193,6 +193,7 @@
                 })
 
                 Event.on('load_more', e => {
+                  console.log('load_more')
                    this.allImgInfo.push(...e.detail.hits)
                   this.render(e.detail.hits)
                 })
@@ -211,6 +212,7 @@
                 })
             }
             render(data) {
+              console.log(render)
               if(!data) return
               let mainNodeWidth = parseFloat(getComputedStyle(this.mainNode).width)
               data.forEach(imgInfo => {
@@ -244,7 +246,7 @@
           }
         }
 
-        new layoutModule()
+        new Barrel()
 
 
     </script>
