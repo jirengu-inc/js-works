@@ -384,7 +384,7 @@
           .hide().eq($(this).index())
           .fadeIn()
         })
-        window.ontouchmove = function(e){
+        document.body.ontouchmove = function(e){
           e.preventDefault()
         }
         $('section').each(function(){
