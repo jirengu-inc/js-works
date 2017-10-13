@@ -77,7 +77,9 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg);  }
     }
-    
+    #search {
+      height: calc(100% - 45px);
+    }
     section .search-area{
       color: #333;
       padding-bottom: 10px;
@@ -384,7 +386,7 @@
           .hide().eq($(this).index())
           .fadeIn()
         })
-        document.body.ontouchmove = function(e){
+        window.ontouchmove = function(e){
           e.preventDefault()
         }
         $('section').each(function(){
