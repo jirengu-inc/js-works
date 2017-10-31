@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <script type="text/javascript" src="//apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+  
+    <style type="text/css">
+      ul,li{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      a{
+        text-decoration: none;
+      }
+      .carousel{
+        position: relative;
+        width: 310px;
+        height: 206px;
+        overflow: hidden;
+      }
+      .carousel .img-ct{
+        position: relative;
+        top: 0;
+        left: 0;
+      }
+      .carousel .img-ct li{
+        float: left;
+      }
+      .arrow{
+        position: absolute;
+          top: 50%;
+          margin-top: -15px;
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          background: #4E443C;
+          color: #fff;
+          border-radius: 30px;
+          box-shadow: 0 0 2px #999;
+          opacity: 0.8
+      }
+      .arrow:hover {
+          opacity: 1;
+      }
+      .pre{
+        left: 10px;
+      }
+      .next{
+        right: 10px;
+      }
+
+    </style>
+
+  </head>
+  <body>
+
+    <div id="c1" class="carousel">
+      <ul class="img-ct">
+        <li><a href="#"><img src="http://cloud.hunger-valley.com/music/public_tuijian_spring.jpg-small" ></a></li>
+        <li><a href="#"><img src="http://cloud.hunger-valley.com/music/public_tuijian_winter.jpg-small" ></a></li>
+        <li><a href="#"><img src="http://cloud.hunger-valley.com/music/public_tuijian_winter.jpg-small" ></a></li>
+        <li><a href="#"><img src="http://cloud.hunger-valley.com/music/public_tuijian_winter.jpg-small" ></a></li>
+      </ul>
+      <a class="pre arrow" href="#"><</a>
+      <a class="next arrow" href="#">></a>
+    </div>
+
+
+    
+    <script type="text/javascript">
+
+
+
+      function Carousel($carousel){
+        this.$carousel = $carousel;
+        var $ct = this.$ct = $carousel.find('.img-ct');
+        this.$pre = $carousel.find('.pre');
+        this.$next = $carousel.find('.next');
+        this.imgWidth = $ct.find('li').width();
+        this.imgSize = $ct.find('li').length;
+
+        $ct.css('width', this.imgWidth * this.imgSize);
+        this.bind();
+      }
+
+      Carousel.prototype = {
+
+        bind: function(){
+          var _this = this;
+          this.$pre.on('click', function(){
+            _this.showPre();
+          });
+          this.$next.on('click', function(){
+            _this.showNext();
+          });
+        },
+
+        showPre: function(){
+          this.$ct.prepend(this.$ct.children().last());
+          this.$ct.css('left', 0-this.imgWidth);
+          this.$ct.animate({'left': 0});
+        },
+
+        showNext: function(){
+          var $ct = this.$ct;
+          $ct.animate({'left': 0-this.imgWidth},function(){
+            $ct.append($ct.children().first());
+            $ct.css('left', 0);
+          });
+        }
+      };
+
+      new Carousel($('.carousel'))
+
+      
+
+
+    </script>
+  </body>
+</html>
