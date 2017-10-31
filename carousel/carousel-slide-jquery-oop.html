@@ -10,87 +10,11 @@
 	
 		<style type="text/css">
 
-/*		
-		html,body,ul,li,p{
-			margin: 0;
-			padding: 0;
-		}
-		li{
-			list-style: none;
-		}
-		a{
-			text-decoration: none;
-		}
-		
-		.carousel{
-			position: relative;
-			width: 310px;
-			height: 206px;
-			overflow: hidden;
-		}
-		.carousel .img-ct{
-			position: absolute;
-		}
-		.carousel .img-ct img{
-			width: 310px;
-			height: 206px;
-		}
-		.carousel .img-ct:after{
-			content: ' ';
-			display: block;
-			clear: both;
-		}
-		.carousel .img-ct li{
-			float: left;
-		}
-
-		.arrow{
-			position: absolute;
-		    top: 50%;
-		    margin-top: -15px;
-		    width: 30px;
-		    height: 30px;
-		    line-height: 30px;
-		    text-align: center;
-		    background: #4E443C;
-		    color: #fff;
-		    border-radius: 30px;
-		    box-shadow: 0 0 2px #999;
-		    opacity: 0.8
-		}
-		.arrow:hover {
-		    opacity: 1;
-		}
-		.pre{
-			left: 10px;
-		}
-		.next{
-			right: 10px;
-		}
-		ul.bullet {
-			position: absolute;
-		    bottom: 10px;
-		    left: 50%;
-		    transform: translateX(-50%);
-		}
-		ul.bullet li {
-		    width: 16px;
-		    height: 4px;
-		    border-radius: 2px;
-		    background: #fff;
-		    display: inline-block;
-		    cursor: pointer;
-		}
-
-		ul.bullet li.active {
-		    background: #666;
-		}
-*/
 
 
 	.carousel {
 		position: relative;
-		width: 320px;
+		width: 640px;
 		height: 180px;
 		margin: 30px auto;
 		overflow: hidden;
@@ -105,7 +29,11 @@
 
 	.carousel .img-ct {
 		position: absolute;
-		overflow: hidden;
+	}
+	.carousel .img-ct:after{
+		content: '';
+		display: block;
+		clear: both;
 	}
 	.carousel .img-ct>li {
 		float: left;
@@ -162,8 +90,6 @@
 	}
 
 
-
-
 		</style>
 
 	</head>
@@ -171,10 +97,10 @@
 
 		<div class="carousel">
 			<ul class="img-ct">
-				<li data-id=0><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg"></a></li>
-				<li data-id=1><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg"></a></li>
-				<li data-id=2><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg"></a></li>
-				<li data-id=3><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/5.jpg"></a></li>
+				<li ><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/1.jpg"></a></li>
+				<li ><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg"></a></li>
+				<li ><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg"></a></li>
+				<li ><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg"></a></li>
 			</ul>
 			<a class="pre arrow" href="#"><</a>
 			<a class="next arrow" href="#">></a>
@@ -186,8 +112,137 @@
 			</ul>
 		</div>
 
+		<div class="carousel">
+			<ul class="img-ct">
+				<li ><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/1.jpg"></a></li>
+				<li ><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg"></a></li>
+				<li ><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg"></a></li>
+				<li ><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg"></a></li>
+			</ul>
+			<a class="pre arrow" href="#"><</a>
+			<a class="next arrow" href="#">></a>
+			<ul class="bullet">
+				<li class="active"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
 
 	<script>
+
+
+		function Carousel($ct){
+			this.init($ct)
+			this.bind()
+		}
+
+		Carousel.prototype = {
+			constructor: Carousel,
+			init: function($ct){
+				console.log(this)
+				this.$ct = $ct				
+				this.$imgCt   = this.$ct.find('.img-ct')
+				this.$imgs    = this.$ct.find('.img-ct >li')
+				this.$preBtn  = this.$ct.find('.pre')
+				this.$nextBtn = this.$ct.find('.next')
+				this.$bullets = this.$ct.find('.bullet li')
+
+				this.imgWidth = this.$imgs.width()
+				this.imgCount = this.$imgs.length
+				this.index = 0
+				this.isAnimate = false
+
+				this.$imgCt.append(this.$imgs.first().clone())
+				this.$imgCt.prepend(this.$imgs.last().clone())
+				this.$imgCt.width((this.imgCount + 2)*this.imgWidth)
+				this.$imgCt.css('left', -this.imgWidth)				
+
+			},
+			bind: function(){
+				var _this = this
+				this.$preBtn.on('click', function(){
+					console.log('pre...')
+					_this.playPre(1)
+				})
+				this.$nextBtn.on('click', function(){
+					console.log('next...')
+					_this.playNext(1)
+				})
+				this.$bullets.on('click', function(){
+					var index = $(this).index()
+					if(_this.index > index){
+						_this.playPre(_this.index - index)
+					}else {
+						_this.playNext(index - _this.index)
+					}
+
+				})
+			},
+
+			playNext: function(len){
+				console.log('playNext...')
+				if(this.isAnimate) return
+				this.isAnimate = true
+				var _this = this
+				this.$imgCt.animate({
+					left: '-='+this.imgWidth*len
+				}, function(){
+					_this.index += len
+					if(_this.index === _this.imgCount){
+						_this.$imgCt.css('left', -_this.imgWidth)
+						_this.index = 0
+					}
+					_this.setBullet()
+					_this.isAnimate = false
+				})
+			},
+
+			playPre: function(len){
+				if(this.isAnimate) return
+				this.isAnimate = true
+
+				var _this = this
+				this.$imgCt.animate({
+					left: '+='+this.imgWidth*len
+				},function(){
+					_this.index -=len
+					if(_this.index < 0){
+						_this.$imgCt.css('left', -_this.imgWidth * _this.imgCount)
+						_this.index = _this.imgCount - 1
+					}
+					_this.setBullet()
+					_this.isAnimate = false
+				})
+			},
+
+			setBullet: function(){
+				this.$bullets.eq(this.index).addClass('active')
+						.siblings().removeClass('active')
+			},
+
+			autoPlay: function(){
+				var _this = this
+				this.autoClock = setInterval(function(){
+					_this.playNext(1)
+				}, 1000)
+			},
+
+			stopAuto: function(){
+				clearInterval(this.autoClock)
+			}
+
+
+
+		}
+
+		var a = new Carousel($('.carousel').eq(0))
+		var b = new Carousel($('.carousel').eq(1))
+
+
+
+
+		/*
 
 		function Carousel($ct){
 			this.init($ct)
@@ -276,6 +331,7 @@
 		}
 
 		new Carousel($('.carousel'))
+		*/
 
 
 
