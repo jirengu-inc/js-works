@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="//unpkg.com/jquery@1.9.1/jquery.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="referrer" content="never">
+  <title>豆瓣电影</title>
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_440195_fw8hsnrso53wstt9.css
+">
+  <style>
+  
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    a {
+      text-decoration: none;
+      color: #333;
+    }
+    html,body,main{
+      height: 100%;
+      position: relative;
+    }
+    body{
+      font-size: 12px;
+      line-height: 1.2;
+    }
+    main>section {
+      height: calc(100% - 45px);
+      padding: 10px;
+      background: #fff;
+      overflow: scroll;
+      -webkit-overflow-scrolling: touch; /*ios 上增加弹性*/
+    }
+    main>section{
+      display: none;
+    }
+    main section:first-child{
+      display: block;
+    }
+    .item {
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+      padding-top: 10px;
+    }
+    .item>a{
+      display: block;
+      display: flex;
+    }
+    .item .cover,
+    .item .cover img{
+      width: 70px;
+    }
+    .item .detail {
+      flex: 1;
+      padding-left: 10px;
+    }
+    .item .detail h2{
+      font-size: 16px;
+    }
+    .item .detail .extra{
+      color: #999;
+      margin-top: 4px;
+    }
+    .item .detail .score{
+      color: #FF5722;
+    }
+    .loading {
+      text-align: center;
+      padding-top: 10px;
+      display: none;
+    }
+    
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg);  }
+    }
+    #search {
+      height: calc(100% - 45px);
+    }
+    section .search-area{
+      color: #333;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+      position: relative;
+    }
+    section .search-area input {
+      width: calc(100% - 50px);
+      padding: 8px;
+      background-color: #eee;
+      border: none;
+      border-radius: 2px;
+      box-shadow: none;
+      outline: none;
+    }
+    section .search-area .button{
+      position: absolute;
+      right: 0;
+      padding: 8px 10px;
+      background: #FF5722;
+      color: #fff;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    .loading .iconfont{
+      display: inline-block;
+      animation: 1s rotate linear infinite;
+    }
+    footer {
+      position: absolute;
+      bottom: 0;
+      height: 45px;
+      width: 100%;
+      border-top: 1px solid #ccc;
+      background-color: #fff;
+      display: flex;
+    }
+    footer>div {
+      flex: 1;
+      font-size: 12px;
+      text-align: center;
+      color: #666;
+      padding-top: 6px;
+    }
+    footer .active{
+      color: #FF5722;
+    }
+    footer>div>span{
+      display: block;
+    } 
+  </style>
+</head>
+<body>
+  <main>
+    <section id="top250">
+      <div class="container">
+     
+       <!--
+        <div class="item">
+          <a href="#">
+            <div class="cover">
+              <img src="http://img7.doubanio.com/view/movie_poster_cover/spst/public/p513344864.png" alt="">
+            </div>
+            <div class="detail">
+              <h2>霸王别姬</h2>
+              <div class="extra"><span class="score">9.3分</span> / 1000收藏</div>
+              <div class="extra">1994 / 剧情、爱情</div>
+              <div class="extra">导演: 张艺谋</div>
+              <div class="extra">主演: 张艺谋、张艺谋、张艺谋</div>
+            </div>
+          </a>
+        </div>-->
+      </div>
+      <div class="loading"><span class="iconfont icon-loading"></span></div>
+    </section>
+    <section id="beimei">
+      <div class="container"></div>
+      <div class="loading"><span class="iconfont icon-loading"></span></div>
+    </section>
+    <section id="search">
+      <div class="search-area">
+        <input type="text" placeholder="搜索电影"><span class="button"> 搜索</span>
+      </div>
+      <div class="search-result">
+        <div class="loading"><span class="iconfont icon-loading"></span> </div>
+      </div>
+    </section>
+
+  </main>
+  <footer>
+    <div class="active">
+      <span class="iconfont icon-paihang"></span><span>Top250</span>
+    </div>
+    <div>
+      <span class="iconfont icon-beimei"></span><span>北美</span>
+    </div>
+    <div>
+      <span class="iconfont icon-search"></span><span>搜索</span>
+    </div>
+ 
+  </footer>
+  
+  <script data-main="src/js/main.js" src="https://cdn.bootcss.com/require.js/2.3.5/require.min.js"></script>
+</body>
+</html>
