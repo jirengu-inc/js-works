@@ -1,0 +1,145 @@
+
+html {
+  height: 100%;
+}
+body {
+  font: 14px/1.5 Arial;
+  color: #fff;
+  position: relative;
+  height: 100%;
+  border: 1px solid transparent;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: url(https://cloud.hunger-valley.com/18-3-25/36850658.jpg) center center no-repeat;
+  background-size: 300%;
+  filter: blur(5px);
+}
+
+section {
+  position: relative;
+  z-index: 1;
+  width: 80%;
+  margin: 100px auto;
+  border-radius: 6px;
+}
+
+section .cover {
+  position: relative;
+  height: 340px;
+  background: url(https://cloud.hunger-valley.com/18-3-25/36850658.jpg) center center no-repeat;
+  background-size: cover;
+}
+
+section .location {
+  float: right;
+  text-align: center;
+  margin: 20px;
+}
+
+section .location .iconfont {
+  font-size: 40px;
+  color: #fff;
+}
+
+section .suggestion {
+  position: absolute;
+  bottom: 0;
+}
+
+section .suggestion .tabs>li {
+  float: left;
+  text-align: center;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+section .suggestion .tabs>li .iconfont {
+  margin-right: 10px;
+}
+
+section .suggestion .tabs>li.active {
+  border-bottom: 2px solid #fff;
+}
+
+section .suggestion .panels {
+  width: 300px;
+  height:  200px;
+  padding: 20px;
+  margin: 30px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+section .suggestion .panels>li {
+  display: none;
+}
+section .suggestion .panels>li.active {
+  display: block;
+}
+
+section .detail {
+  display: flex;
+  background-color: rgba(255,255,255,0.5);
+}
+
+section .detail .current {
+  flex: 2;
+  height: 100px;
+  display: flex;
+  border-right: 1px solid rgba(0,0,0,0.2);
+}
+
+section .detail .current>div {
+  flex: 1;
+  text-align: center;
+}
+
+section .detail .current .temperature {
+  font-size: 40px;
+  display: block;
+}
+
+section .detail .current .date {
+  display: inline-block;
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 0px 5px;
+  font-size: 12px;
+}
+
+section .detail .current .weather-pic {
+  display: block;
+  margin-top: 20px;
+}
+
+section .detail .current .more {
+  display: block;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+
+
+section .detail .future {
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid rgba(0,0,0,0.2);
+}
+
+section .detail .future span {
+  display: block;
+  margin-top: 6px;
+}
+
+
+
+
+
+
