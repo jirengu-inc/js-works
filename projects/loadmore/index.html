@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>加载更多</title>
+</head>
+<body>
+  <ul id="news-container">
+    <li>内容1</li>
+    <li>内容2</li>
+    <li>内容3</li>
+    <li>内容4</li>
+  </ul>
+  <div>
+    <button id="load-more"> 加载更多</button>
+  </div>
+
+  <script>
+     var loadBtn = document.querySelector('#load-more')
+     var container = document.querySelector('#news-container')
+
+     var index = container.querySelectorAll('li').length + 1
+     var isLoading = false
+
+     loadBtn.onclick = function(){
+      if(isLoading) return
+
+      isLoading = true
+      getData(function(data){
+        console.log(data)
+        renderData(data)
+        index += data.length
+        isLoading = false
+      })
+     }
+
+     function getData(callback) {
+        var xhr = new XMLHttpRequest()
+        xhr.open('get', '/loadMore?index='+index, true)
+        xhr.onload = function() {
+          if(xhr.status >=200 && xhr.status <300 || xhr.status === 304) {
+            callback(JSON.parse(xhr.responseText))
+          }  
+        }
+        xhr.send()
+     } 
+
+     function renderData(data) {
+       var documentFregment = document.createDocumentFragment()
+       data.forEach(function(item) {
+        var node = document.createElement('li')
+        node.innerText = item
+        documentFregment.appendChild(node)
+       })
+       container.appendChild(documentFregment)
+       
+     }
+
+
+
+  </script>
+</body>
+</html>
