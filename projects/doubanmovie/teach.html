@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="//unpkg.com/jquery@1.9.1/jquery.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+
+  <title>豆瓣电影</title>
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_440195_fw8hsnrso53wstt9.css
+">
+ <meta name="referrer" content="never">
+  <style>
+  
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    a {
+      text-decoration: none;
+      color: #333;
+    }
+    html,body,main{
+      height: 100%;
+      position: relative;
+    }
+    body{
+      font-size: 12px;
+      line-height: 1.2;
+    }
+    main>section {
+      height: calc(100% - 45px);
+      padding: 10px;
+      background: #fff;
+      overflow: scroll;
+      -webkit-overflow-scrolling: touch; /*ios 上增加弹性*/
+    }
+    main>section{
+      display: none;
+    }
+    main section:first-child{
+      display: block;
+    }
+    .item {
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+      padding-top: 10px;
+    }
+    .item>a{
+      display: block;
+      display: flex;
+    }
+    .item .cover,
+    .item .cover img{
+      width: 70px;
+    }
+    .item .detail {
+      flex: 1;
+      padding-left: 10px;
+    }
+    .item .detail h2{
+      font-size: 16px;
+    }
+    .item .detail .extra{
+      color: #999;
+      margin-top: 4px;
+    }
+    .item .detail .score{
+      color: #FF5722;
+    }
+    .loading {
+      text-align: center;
+      padding-top: 10px;
+      display: none;
+    }
+    
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg);  }
+    }
+    #search {
+      height: calc(100% - 45px);
+    }
+    section .search-area{
+      color: #333;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+      position: relative;
+    }
+    section .search-area input {
+      width: calc(100% - 50px);
+      padding: 8px;
+      background-color: #eee;
+      border: none;
+      border-radius: 2px;
+      box-shadow: none;
+      outline: none;
+    }
+    section .search-area .button{
+      position: absolute;
+      right: 0;
+      padding: 8px 10px;
+      background: #FF5722;
+      color: #fff;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    .loading .iconfont{
+      display: inline-block;
+      animation: 1s rotate linear infinite;
+    }
+    footer {
+      position: absolute;
+      bottom: 0;
+      height: 45px;
+      width: 100%;
+      border-top: 1px solid #ccc;
+      background-color: #fff;
+      display: flex;
+    }
+    footer>div {
+      flex: 1;
+      font-size: 12px;
+      text-align: center;
+      color: #666;
+      padding-top: 6px;
+    }
+    footer .active{
+      color: #FF5722;
+    }
+    footer>div>span{
+      display: block;
+    } 
+  </style>
+</head>
+<body>
+  <main>
+    <section id="top250">
+      <div class="container">       
+<!--         <div class="item">
+          <a href="#">
+            <div class="cover">
+              <img src="http://img7.doubanio.com/view/movie_poster_cover/spst/public/p513344864.png" alt="">
+            </div>
+            <div class="detail">
+              <h2>霸王别姬</h2>
+              <div class="extra"><span class="score">9.3分</span> / 1000收藏</div>
+              <div class="extra">1994 / 剧情、爱情</div>
+              <div class="extra">导演: 张艺谋</div>
+              <div class="extra">主演: 张艺谋、张艺谋、张艺谋</div>
+            </div>
+          </a>
+        </div> -->
+      </div>
+      <div class="loading"><span class="iconfont icon-loading"></span></div>
+    </section>
+    <section id="beimei">
+      <div class="container">
+        hello
+      </div>
+      <div class="loading"><span class="iconfont icon-loading"></span></div>
+    </section>
+    <section id="search">
+      <div class="wrap">
+        <div class="search-area">
+          <input type="text" placeholder="搜索电影"><span class="button"> 搜索</span>
+        </div>
+        <div class="search-result">
+          <div class="container"></div>
+          <div class="loading"><span class="iconfont icon-loading"></span> </div>
+        </div>        
+      </div>
+
+    </section>
+  </main>
+  <footer>
+    <div class="active">
+      <span class="iconfont icon-paihang"></span><span>Top250</span>
+    </div>
+    <div>
+      <span class="iconfont icon-beimei"></span><span>北美</span>
+    </div>
+    <div>
+      <span class="iconfont icon-search"></span><span>搜索</span>
+    </div>
+ 
+  </footer>
+  
+  <script>
+
+    var Helpers = {
+      isToBottom: function($viewport, $content) {
+        return $viewport.height() + $viewport.scrollTop() + 30 > $content.height() 
+      },
+
+      createNode: function(subject){
+          var $node = $('<div class="item">\
+            <a href="#">\
+              <div class="cover">\
+                <img src="" alt="">\
+              </div>\
+              <div class="detail">\
+                <h2></h2>\
+                <div class="extra"><span class="score"></span> / <span class="collection"></span>收藏</div>\
+                <div class="extra"></div>\
+                <div class="extra"></div>\
+                <div class="extra"></div>\
+              </div>\
+            </a>\
+          </div>')
+          $node.find('a').attr('href', subject.alt)    
+          $node.find('.cover img').attr('src', subject.images.small)
+          $node.find('.detail h2').text(subject.title)   
+          $node.find('.detail .score').text(subject.rating.average)  
+          $node.find('.detail .collection').text(subject.collect_count)  
+          $node.find('.detail .extra').eq(0).text(subject.year + ' / ' + subject.genres.join('、')) 
+          $node.find('.detail .extra').eq(1).text('导演：' + subject.directors.map(v=>v.name).join('、'))  
+          $node.find('.detail .extra').eq(2).text('主演：' + subject.casts.map(v=>v.name).join('、'))    
+          //console.log(_this.$container)
+          return $node
+      }
+    }
+
+
+    var Paging = {
+      init: function(){
+        this.$tabs = $('footer>div')
+        this.$pages = $('main>section')
+        this.bind()
+      },
+      bind: function(){
+        var _this = this
+        this.$tabs.on('click', function(){
+          var $this = $(this)
+          var index = $this.index()
+          $this.addClass('active')
+            .siblings().removeClass('active')
+          _this.$pages.eq(index).fadeIn().siblings().fadeOut()
+        })
+      }
+    }
+
+    var Top250 = {
+      init: function(){
+        var _this = this
+        this.$container = $('#top250')
+        this.$content = this.$container.find('.container')
+        this.page = 0
+        this.count = 10
+        this.isFinshed = false
+        this.isLoading = false
+        this.bind()
+        this.getData(function(data){
+          _this.renderData(data)
+          _this.page++
+        })
+      },
+      bind: function(){
+        var _this = this
+
+        this.$container.on('scroll', function(){
+          console.log(_this.isLoading)
+          if(Helpers.isToBottom(_this.$container, _this.$content) && !_this.isFinshed && !_this.isLoading){
+            console.log('to bottom')
+            _this.getData(function(data){
+              _this.renderData(data)
+              _this.page++
+              if(_this.page * _this.count > data.total) {
+                _this.isFinshed = true
+              }
+            })
+          }
+          // if(_this.clock){
+          //   clearTimeout(_this.clock)
+          // }
+          // _this.clock = setTimeout(function(){
+          //   console.log('scroll...')
+
+          // }, 100)
+        })
+      },
+      getData: function(callback){
+        var _this = this
+        this.isLoading = true
+        this.$container.find('.loading').show(400)
+        $.ajax({
+          url: '//api.douban.com/v2/movie/top250',
+          data: {
+            start: this.count*this.page,
+            count: this.count
+          },
+          dataType: 'jsonp'
+        }).done(function(ret){
+          _this.isLoading = false
+          _this.$container.find('.loading').hide(400)
+          callback(ret)
+        })
+      },
+      renderData(data){
+        var _this = this
+        data.subjects.forEach(function(item){
+          var $node = Helpers.createNode(item)
+          _this.$content.append($node)    
+        })
+      }
+
+    }
+
+    var UsBoard = {
+      init: function(){
+        var _this = this
+        this.$container = $('#beimei')
+        this.$content = this.$container.find('.container')
+        this.getData(function(data){
+          _this.renderData(data)
+        })
+      },
+      getData: function(callback){
+        $.ajax({
+          url: '//api.douban.com/v2/movie/us_box',
+          data: {
+            start: 0,
+            count: 10
+          },
+          dataType: 'jsonp'
+        }).done(function(ret){
+          callback(ret)
+        })
+      },
+      renderData(data){
+        var _this = this
+        console.log(data)
+        data.subjects.forEach(function(item){
+          var $node = Helpers.createNode(item.subject)  
+          _this.$content.append($node)    
+        })
+      }
+
+    }
+
+    var Search = {
+      init: function() {
+        this.page = 0
+        this.count = 10
+        this.isFinshed = false
+        this.isLoading = false
+        this.$container = $('#search')
+        this.$content = this.$container.find('.container')
+        this.bind()
+      },
+
+      bind: function() {
+        var _this = this
+        this.$container.find('.search-area .button').on('click', function(){
+          console.log('click ')
+          _this.getData(function(data){
+            console.log(data)
+            _this.renderData(data)
+          })
+        })
+        console.log(this.$container.find('.search-area input'))
+        this.$container.find('.search-area input').on('keyup', function(e){
+          if(e.key === 'Enter') {
+            _this.getData(function(data){
+            _this.renderData(data)
+          })
+          }
+        })
+
+        this.$container.on('scroll', function(){
+          console.log(_this.isLoading)
+          if(Helpers.isToBottom(_this.$container, _this.$container.find('.wrap')) && !_this.isFinshed && !_this.isLoading){
+            console.log('to bottom')
+            _this.getData(function(data){
+              _this.renderData(data)
+              _this.page++
+              if(_this.page * _this.count > data.total) {
+                _this.isFinshed = true
+              }
+            })
+          }
+        })
+      },
+
+      getData: function(callback){
+        var _this = this
+        var keyword = this.$container.find('.search-area input').val()
+        this.isLoading = true
+        $.ajax({
+          url: 'http://api.douban.com/v2/movie/search',
+          data: {
+            q: keyword
+          },
+          dataType: 'jsonp'
+        }).done(function(ret){
+          _this.isLoading = false
+          callback(ret)
+        })
+      },
+
+      renderData(data){
+        var _this = this
+        data.subjects.forEach(function(item){
+          var $node = Helpers.createNode(item)
+          _this.$content.append($node)    
+        })
+      }
+    }
+
+
+
+
+    var App = {
+      init: function(){
+        Paging.init()
+        Top250.init()
+        UsBoard.init()
+        Search.init()
+      }
+    }
+
+    App.init()
+
+
+
+
+    // $('footer>div').on('click', function(){
+    //   $(this).addClass('active').siblings().removeClass('active')
+    //   var index = $(this).index()
+    //   $('main section').eq(index).fadeIn().siblings().fadeOut()
+    // })
+    
+    
+  </script>
+</body>
+</html>

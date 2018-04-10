@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>日历组件</title>
+  <script src="//unpkg.com/vue@2.5.16/dist/vue.min.js"></script>
+  <style>
+    .ui-date-picker {
+      position: absolute;
+      width: 240px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      font-family: serif, cursive, fantasy
+    }
+
+    .ui-date-picker > .header {
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background-color: #CA2B2B;
+      color: #fff;
+    }
+
+    .ui-date-picker .caret-left {
+      display: block;
+      float: left;
+      margin-left: 10px;
+      margin-top: 6px;
+      border-right: 7px solid #fff;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      width: 0;
+      height: 0;
+      cursor: pointer;
+    }
+
+    .ui-date-picker .caret-right {
+      display: block;
+      float: right;
+      margin-right: 10px;
+      margin-top: 6px;
+      border-left: 7px solid #fff;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      width: 0;
+      height: 0;
+      cursor: pointer;
+    }
+
+    .ui-date-picker .panel {
+      width: 100%;
+      text-align: center;
+      background-color: #fff;
+    }
+
+    .ui-date-picker .panel th {
+      line-height: 2;
+    }
+
+    .ui-date-picker .panel td {
+      line-height: 1.2
+    }
+
+    .ui-date-picker .pre-month,
+    .ui-date-picker .next-month {
+      color: #eee;
+    }
+
+    .ui-date-picker .cur-month {
+      cursor: pointer;
+    }
+
+    .ui-date-picker .cur-month:hover {
+      background-color: #ccc;
+      color: #fff;
+    }
+
+    .ui-date-picker .cur-date {
+      color: #CA2B2B;
+    }
+  </style>    
+</head>
+<body>
+  <calendar :date="date0" />
+  <calendar :date="date1"></calendar>
+
+
+  <script>
+    
+  Vue.component("calendar",{
+      props:["date"],
+      data:function(){
+          return {
+              open:false,
+              value:this.child.now,
+              datatop:"",
+              datalist:[],
+              year:"",
+              month:""
+          }
+      },
+      methods:{
+          showCalendar:function(){
+              this.open=!this.open;
+              if(this.open){
+                  if(this.value){
+                      this.value=this.child.now.replace(/-/g,"/");
+                  }else{
+                      this.value=new Date().getFullYear()+'/'+(Number(new Date().getMonth())+1)+'/'+new Date().getDate();
+                  };
+                  if(this.isDate()){
+                      this.setDateInfo();
+                  };
+              };
+          },
+          setDateInfo:function(dates){ 
+              dates=dates||this.value;
+              var Dates=new Date(dates);
+              this.year=Dates.getFullYear();
+              this.month=Dates.getMonth()+1;
+              var day=Dates.setDate(1);
+              var week=new Date(day).getDay();
+              var num=new Number;
+              if(this.month==2){
+                  num=this.year%100==0?(this.year%400==0?29:28):(this.year%4==0?29:28);
+              }else if(this.month==1||this.month==3||this.month==5||this.month==7||this.month==8||this.month==10||this.month==12){
+                  num=31;
+              }else{
+                  num=30;
+              };
+              this.datalist=[];
+              for(var i=1;i<=(num+week);i++){
+                  if(i>week){
+                      var one=new Array;
+                      one.push(this.year);
+                      one.push(this.zeroFill(this.month));
+                      one.push(this.zeroFill(i-week));
+                      var start=this.child.start?this.child.start.split("-"):0;
+                      start=this.zeroFill(start[0])+'/'+this.zeroFill(start[1])+'/'+this.zeroFill(start[2]);
+                      start=new Date(start);
+                      var end=this.child.end?this.child.end.split("-"):0;
+                      end=this.zeroFill(end[0])+'/'+this.zeroFill(end[1])+'/'+this.zeroFill(end[2]);
+                      end=new Date(end);
+                      var now=new Date(one.join("/"));
+                      var className="";
+                      if(one[0]==new Date(this.value).getFullYear()&&one[1]==new Date(this.value).getMonth()+1&&one[2]==new Date(this.value).getDate()){
+                          className+="on ";
+                      };
+                      if(now<start||now>end){
+                          className+='disabled';
+                          one=[];
+                      };
+                      this.datalist.push({"className":className,"num":(i-week),"date":one.join("-")});
+                  }else{
+                      this.datalist.push({"className":"disabled","num":"","date":""});
+                  };
+              };
+              this.datatop='<span class="top_month">'+this.getMonthText(this.month)+'</span><span class="top_year">'+this.year+'</span>';
+          },
+          clickDate:function(type,day,dates){
+              switch (type){
+                  case 1:
+                      this.setDateInfo((this.year-1)+"/"+this.month+"/"+1);
+                      break;
+                  case 2:
+                      this.setDateInfo((this.month-1==0?this.year-1:this.year)+"/"+(this.month-1==0?12:this.month-1)+"/"+1);
+                      break;
+                  case 3:
+                      this.setDateInfo((this.month+1==13?this.year+1:this.year)+"/"+(this.month+1==13?1:this.month+1)+"/"+1);
+                      break;
+                  case 4:
+                      this.setDateInfo((this.year+1)+"/"+this.month+"/"+1);
+                      break;
+                  case 5:
+                      if(day){
+                          this.child.now=day;
+                          this.showCalendar();
+                          this.child.callback&&this.child.callback(day);
+                      };
+                      break;
+                  default:
+                      break;
+              }
+          },
+          isDate:function(){
+              var num=this.value.split("/");
+              if(num.length==3&&!isNaN(num[0])&&!isNaN(num[1])&&!isNaN(num[2])){
+                  return true;
+              };
+              return false;
+          },
+          zeroFill:function(num){
+              num=Number(num);
+              num=num<10?"0"+num:num;
+              return num;
+          },
+          getMonthText:function(m){
+              var month='';
+              switch(m){
+              case 1:
+                  month="一月";
+                  break;
+                  case 2:
+                  month="二月";
+                  break;
+              case 3:
+                  month="三月";
+                  break;
+                  case 4:
+                  month="四月";
+                  break;
+              case 5:
+                  month="五月";
+                  break;
+                  case 6:
+                  month="六月";
+                  break;
+              case 7:
+                  month="七月";
+                  break;
+                  case 8:
+                  month="八月";
+                  break;
+              case 9:
+                  month="九月";
+                  break;
+                  case 10:
+                  month="十月";
+                  break;
+              case 11:
+                  month="十一月";
+                  break;
+                  case 12:
+                  month="十二月";
+                  break;
+              };
+              return month;
+          }
+      },
+      template:'<p class="m_calender">'+
+                  '<input class="date_input" click="showCalendar" readonly="readonly" type="type" v-model="child.now">'+
+                  '</p><p class="date_main" v-if="open">'+
+                      '</p><p class="date_top">'+
+                          ''+
+                          ''+
+                          '</p><p v-html="datatop"> </p>'+
+                          ''+
+                          ''+
+                      '<p></p>'+
+                      '<p class="date_week">'+
+                          '<em>日</em>'+
+                          '<em>一</em>'+
+                          '<em>二</em>'+
+                          '<em>三</em>'+
+                          '<em>四</em>'+
+                          '<em>五</em>'+
+                          '<em>六</em>'+
+                      '</p>'+
+                      '<p class="date_day"><em :class="s.className" click="clickDate(5,s.date)" v-for="s in datalist">{{ s.num }}</em></p>'+
+                      '<p class="date_mask" click="showCalendar"> </p>'+
+                  '<p></p>'+
+              '<p></p>'
+  });
+
+  </script>
+
+</body>
+</html>
