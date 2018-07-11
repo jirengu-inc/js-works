@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  font: 3.2vw/1.5 Arial;
+  background: #f0efed;
+}
+
+header {
+  background: #06c1ae;
+  border-bottom: 1px solid #21897d;
+  height: 13.6vw;
+  color: #fff;
+  font-size: 4.27vw;
+  padding: 0 2.67vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+header .search .icon-search {
+  position: absolute;
+  color: red;
+  left: 6px;
+  font-size: 20px;
+}
+header .search input {
+  height: 9vw;
+  padding-left: 8vw;
+  border-radius: 1vw;
+  border: none;
+}
+
+header .user {
+  /* margin-left: auto; */
+}
