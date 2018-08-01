@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>loading</title>
+    <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }  
+
+    header {
+      background: #eee;
+    }
+    h1 {
+      padding: 10px;
+    }
+
+    .loading {
+      position: relative;
+      height: 3px;
+      background: #eee;
+    }
+
+    .loading::before {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 100px;
+      background-image: linear-gradient(to right, #eee, red, yellow,  #eee);
+      position: absolute;
+      top: 0;
+      left: 0;
+      animation: moving 5s linear infinite alternate;
+    }
+
+    @keyframes moving {
+      0% {
+        left: 0;
+      }
+
+      100% {
+        left: calc(100% - 100px);
+      }
+    }
+
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>logo</h1>
+      <div class="loading"></div>
+    </header>
+  
+
+  </body>
+</html>

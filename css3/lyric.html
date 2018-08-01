@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>歌词效果</title>
+
+  <style>
+
+
+  @keyframes typing { from { width: 0; } }
+  @keyframes blink-caret { 50% { border-color: transparent; } }
+
+  h1 { 
+    border-right: .1em solid;
+    color: #fff;
+    width: 352px;
+    margin: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: typing 5s steps(11, end), /* # of steps = # of chars */
+    blink-caret .5s step-end infinite alternate;
+  }
+
+  body {
+    background: #000;
+    height: 100vh;
+  }
+
+  </style>
+</head>
+<body>
+  <h1>躺在你学校的操场看星空</h1>
+</body>
+</html>

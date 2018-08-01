@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>歌词效果</title>
+
+  <style>
+    @keyframes moving { 
+      from { 
+        width: 0; 
+      } 
+    }
+
+    .line {
+      position: relative;
+    }
+
+    p { 
+      width: 600px;
+      font-size: 40px;
+      white-space: nowrap;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      z-index: 2;      
+    }
+
+    p:nth-child(1) {
+      color: red;
+      animation: moving 20s 
+    }
+
+    p:nth-child(2) {
+      z-index: -1;
+      color: #888;
+    }
+
+  </style>
+</head>
+<body>
+    <div class="line">
+      <p>躺在你学校的操场看星空</p>
+      <p>躺在你学校的操场看星空</p>
+    </div>
+</body>
+</html>
