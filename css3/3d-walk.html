@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+  <style>
+  .people {
+  position: relative;
+  animation: go 10s linear infinite alternate;
+}
+
+.people.small {
+  position: relative;
+  transform: scale(0.6);
+  animation: go-small 10s linear infinite alternate;
+}
+
+
+.people * {
+  position: absolute;
+  display: block; 
+}
+.people .head {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #000;
+  border-radius: 50%;
+  animation: headreverse 20s linear infinite;
+}
+
+.people .head::before {
+  content: '';
+  display: block;
+  width: 6px;
+  border-top: 1px solid #000;
+  position: absolute;
+  top: 16px;
+  left: 26px;
+}
+
+.people .head::after {
+  content: '';
+  display: block;
+  width: 3px;
+  border-top: 1px solid #000;
+  position: absolute;
+  top: 30px;
+  left: 34px;
+}
+
+
+.people .body {
+  height: 40px;
+  border-left: 1px solid #000;
+  top: 42px;
+  left: 20px;
+}
+
+.people .body::before {
+  content: '';
+  height: 30px;
+  display: block;
+  border-left: 1px solid #000;
+  transform: rotateZ(45deg);
+  transform-origin: left top;
+  position: absolute;
+  top: 10px;
+  left: -1px;
+  animation: walk .6s linear infinite alternate;
+}
+
+.people .body::after {
+  content: '';
+  height: 30px;
+  display: block;
+  border-left: 1px solid #000;
+  transform: rotateZ(-45deg);
+  transform-origin: left top;
+  position: absolute;
+  top: 11px;
+  animation: walk .6s .6s linear infinite alternate;
+}
+
+.people .foot::before {
+  content: '';
+  height: 20px;
+  display: block;
+  border-left: 1px solid #000;
+  transform: rotateZ(45deg);
+  transform-origin: left top;
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  animation: walk .6s linear infinite alternate;
+}
+
+.people .foot::after {
+  content: '';
+  height: 20px;
+  display: block;
+  border-left: 1px solid #000;
+  transform: rotateZ(-45deg);
+  transform-origin: left top;
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  animation: walk .6s .6s linear infinite alternate;
+}
+
+@keyframes walk {
+  0% {
+    transform: rotateZ(-45deg);
+  }
+  50% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(45deg);
+  }
+}
+
+@keyframes headreverse {
+  0% {
+    transform: rotateY(0deg);
+  }
+  48% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  98% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes go {
+  0% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(calc(100% - 60px));
+  }
+}
+
+@keyframes go-small {
+  0% {
+    transform: translateX(0px) translateZ(100px);
+  }
+  100% {
+    transform: translateX(300px) translateZ(-300px) rotateY(45deg);
+    
+  }
+}
+
+
+
+
+.stage {
+  margin: 80px auto;
+  width: 800px;
+  height: 120px;
+/*   background: #eaeaea; */
+  perspective: 1000px;
+}
+
+.container {
+  width: 100%;
+  height: 100px;
+  transform-style: preserve-3d;
+  transform: rotateX( -10deg) rotateY( -10deg) rotateZ(0deg); 
+/*   perspective-origin: top left; */
+  transform-origin: center;
+  position: relative;
+  background: rgba(255, 0,0,0.03);
+}
+
+.ground {
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(to top, #8BC34A, #4CAF50);
+  transform: rotateX( 90deg) translateZ(100px) ;
+}
+
+  
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="container">
+      <div class="people">
+        <span class="head"></span>
+        <span class="body"></span>
+        <span class="foot"></span>
+      </div>
+      <div class="people small">
+        <span class="head"></span>
+        <span class="body"></span>
+        <span class="foot"></span>
+      </div>
+      <div class="ground"></div>
+    </div>
+  </div>
+
+    <section>
+    <div>rotateX <input type="range" id="rotateX" min="-180" value=0 max="180" step="1"></div>
+    <div>rotateY <input type="range" id="rotateY" min="-180" value=0 max="180" step="1"></div>
+    <div>rotateZ <input type="range" id="rotateZ" min="-180" value=0 max="180" step="1"></div>
+  </section>
+  
+  <script>
+    document.querySelectorAll('input').forEach(input => {
+      input.oninput = () => {
+        let x = document.querySelector('#rotateX').value
+        let y = document.querySelector('#rotateY').value
+        let z = document.querySelector('#rotateZ').value
+
+        document.querySelector('.container').style = `transform: rotateX(${x}deg) rotateY(${y}deg) rotateZ(${z}deg)`
+      }
+    })
+    
+    
+  </script>
+</body>
+</html>
