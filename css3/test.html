@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    
+    .box {
+      width: 100px;
+      height: 100px;
+      border: 1px solid ;
+    }
+
+    .box:hover {
+      animation: 3s rainbow 3 both alternate ;
+    }
+
+    @keyframes rainbow {
+      0% {
+        background: red;
+      }
+
+      50% {
+        background: pink;
+      }
+
+      100% {
+        background: yellow;
+      }
+    }
+  </style>
+</head>
+<body>
+    <div class="box"></div>
+</body>
+</html>
