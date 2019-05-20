@@ -351,8 +351,11 @@ function getNode(item){
 	var tpl = ''
 		tpl += '<li class="item">';
 		tpl += ' <a href="'+ item.url +'" class="link"><img src="' + item.img_url + '" alt=""></a>';
-		tpl += ' <h4 class="header">'+ item.short_name +'</h4>';
-		tpl += '<p class="desp">'+item.short_intro+'</p>';
+		tpl += ' <h4 class="header">'+ item.name +'</h4>';
+		if(item.short_intro) {
+			tpl += '<p class="desp">'+item.short_intro+'</p>';
+		}
+		
 		tpl += '</li>';
 	
 	return $(tpl)
@@ -365,8 +368,11 @@ function renderData(items){
 	for(var i = 0;i<items.length;i++){
 		tpl += '<li class="item">';
 		tpl += ' <a href="'+ items[i].url +'" class="link"><img src="' + items[i].img_url + '" alt=""></a>';
-		tpl += ' <h4 class="header">'+ items[i].short_name +'</h4>';
-		tpl += '<p class="desp">'+items[i].short_intro+'</p>';
+		tpl += ' <h4 class="header">'+ items[i].name +'</h4>';
+		if(items[i].short_intro) {
+			tpl += '<p class="desp">'+items[i].short_intro+'</p>';
+		}
+		
 		tpl += '</li>';
 	}
 	$nodes = $(tpl);
