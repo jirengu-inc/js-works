@@ -92,19 +92,15 @@ Exposure.init($('#load'),function(){
 
 function getData(callback){
 	$.ajax({
-		url: 'http://platform.sina.com.cn/slide/album_tech',
-		type: 'get',
-		dataType: 'jsonp',
-		jsonp:"jsoncallback",
+		url: 'https://photo.sina.cn/aj/v2/index?cate=military',
+		dataType: 'jsonp',   
+		jsonp:"callback",
 		data: {
-			app_key: '1271687855',
-			format:'json',
-			size:'img',
-			num: perPageCount,
+			pagesize: perPageCount,
 			page: curPage
 		},
 		success: function(ret){
-			if(ret.status.code == 0){
+			if(ret.code == 1){
 				callback(ret.data);
 				curPage++;
 			}
@@ -120,11 +116,9 @@ function renderData(items){
 		$nodes;
 	for(var i = 0;i<items.length;i++) {
 		tpl += '<li class="item">';
-		tpl += ' <a href="#" class="link"><img src="' + items[i].img_url + '" alt=""></a>';
-		tpl += ' <h4 class="header">'+ items[i].name +'</h4>';
-		if(items[i].short_intro) {
-			tpl += '<p class="desp">'+items[i].short_intro+'</p>';
-		}
+		tpl += ' <a href="'+ items[i].url +'" class="link"><img src="' + items[i].thumb + '" alt=""></a>';
+		tpl += ' <h4 class="header">'+ items[i].stitle +'</h4>';
+		tpl += '<p class="desp">' + items[i].title +'</p>';
 		tpl += '</li>';
 	}
 	$nodes = $(tpl); 

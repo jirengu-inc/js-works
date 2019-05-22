@@ -98,7 +98,8 @@ var perPageCount = 10
 var colSumHeight = []
 var nodeWidth = $('.item').outerWidth(true)
 var colNum = parseInt($('#pic-ct').width()/nodeWidth)
-for(var i = 0; i < colNum.length; i++){
+console.log(colNum)
+for(var i = 0; i < colNum; i++){
 	colSumHeight[i] = 0
 }
 
@@ -133,19 +134,20 @@ $(window).scroll(function(){
 	}
 })
 
+//tips 原接口更换为新接口
+//https://photo.sina.cn/aj/v2/index?cate=military&page=1&pagesize=5
 
 function getData(callback){
 		$.ajax({
-			url: 'http://platform.sina.com.cn/slide/album_tech',
+			url: 'https://photo.sina.cn/aj/v2/index?cate=military',
 			dataType: 'jsonp',   
-			jsonp:"jsoncallback",
+			jsonp:"callback",
 			data: {
-				app_key: '1271687855',
-				num: perPageCount,
+				pagesize: perPageCount,
 				page: curPage
 			}
 		}).done(function(ret){
-			if(ret && ret.status && ret.status.code === "0"){
+			if(ret && ret.code == 1 ){
 				callback(ret.data);   //如果数据没问题，那么生成节点并摆放好位置
 				curPage++
 			}else{
@@ -158,11 +160,9 @@ function getData(callback){
 function getNode(item){
 	var tpl = ''
 		tpl += '<li class="item">';
-		tpl += ' <a href="'+ item.url +'" class="link"><img src="' + item.img_url + '" alt=""></a>';
-		tpl += ' <h4 class="header">'+ item.name +'</h4>';
-		if(item.short_intro) {
-			tpl += '<p class="desp">'+item.short_intro+'</p>';
-		}
+		tpl += ' <a href="'+ item.url +'" class="link"><img src="' + item.thumb + '" alt=""></a>';
+		tpl += ' <h4 class="header">'+ item.stitle +'</h4>';
+		tpl += '<p class="desp">' + item.title +'</p>';
 		
 		tpl += '</li>';
 	
@@ -180,7 +180,9 @@ function waterFallPlace($node){
 				minSumHeight = colSumHeight[i];
 			}
 		}
-
+		console.log(colSumHeight)
+		console.log('waterFallPlace')
+		console.log(nodeWidth, idx)
 		$node.css({
 			left: nodeWidth*idx,
 			top: minSumHeight,
@@ -188,6 +190,7 @@ function waterFallPlace($node){
 		});
 
 		colSumHeight[idx] = $node.outerHeight(true) + colSumHeight[idx];
+		console.log(colSumHeight)
 		$('#pic-ct').height(Math.max.apply(null,colSumHeight));
 
 }
@@ -229,6 +232,9 @@ function waterFallPlace($node){
 
 */
 
+
+/*
+
 	function checkShow(){
 		if(isShow($('#load'))){
 			loadAndPlace();
@@ -257,7 +263,7 @@ function waterFallPlace($node){
 	function loadAndPlace(){
 		$.ajax({
 			url: 'http://platform.sina.com.cn/slide/album_tech',
-			dataType: 'jsonp',   //这里使用了新浪新闻的 jsonp 接口，大家可以直接看数据， 如： http://platform.sina.com.cn/slide/album_tech?jsoncallback=func&app_key=1271687855&num=3&page=4
+			dataType: 'jsonp',  
 			jsonp:"jsoncallback",
 			data: {
 				app_key: '1271687855',
@@ -284,7 +290,7 @@ function place(nodeList){
 			$('#pic-ct').append($node)
 			waterFallPlace($node)
 		})
-	})
+	})*/
 
 	/*
 
@@ -303,12 +309,15 @@ function place(nodeList){
 		//当节点里的图片全部加载后再使用瀑布流计算，否则会因为图片未加载 item 高度计算错误导致瀑布流高度计算出问题
 		waterFallPlace($nodes);
 	});
-	*/
+	
 }
+*/
 
 
 
 // 瀑布流
+
+/*
 
 var colSumHeight = [],
 		nodeWidth = $('.item').outerWidth(true),
@@ -379,6 +388,7 @@ function renderData(items){
 	$('#pic-ct').append($nodes);
 	return $nodes;
 }
+*/
 
 
 </script>
