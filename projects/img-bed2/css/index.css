@@ -1,0 +1,184 @@
+/* reset css */
+body, p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+/* common css */
+:root {
+  --body-padding: 32px;
+  --bg-color: #333;
+  --theme-color: #00aa3a;
+}
+
+body {
+  font: 16px/1.67 Arial, Helvetica, sans-serif;
+  color: #222;
+}
+
+/* page css */
+header {
+  display: flex;
+  align-items: center;
+  padding: 10px var(--body-padding);
+  background: var(--bg-color);
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+}
+
+header .logo img {
+  height: 22px;
+}
+
+header a {
+  color: #fff;
+}
+
+header nav > a {
+  margin-left: 30px;
+  text-transform: uppercase;
+}
+
+header .setting {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  text-transform: uppercase;
+}
+
+header .setting .icon-setting {
+  font-size: 20px;
+}
+
+main {
+  padding: 0 var(--body-padding);
+}
+
+main .ct-upload {
+  max-width: 700px;
+  padding: 30px 10px;
+  margin: 60px auto 0 auto;
+  border: 1px dashed #666;
+  border-radius: 4px;
+  color: #666;
+  text-align: center;
+}
+
+main .ct-upload .icon-cloud {
+  font-size: 80px;
+  line-height: 1;
+}
+
+main .ct-upload p {
+  margin: 10px 0 0 0;
+  line-height: 1;
+}
+
+main .ct-upload p:first-of-type {
+  font-size: 22px;
+}
+
+main .ct-loading {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+main .ct-loading .view-all {
+  margin-left: auto;
+  color: var(--theme-color);
+}
+
+main .ct-loading li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+main .ct-loading .loading {
+  display: block;
+  width: 400px;
+  height: 20px;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+} 
+
+main .ct-loading .loading i {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: 20px;
+  background-color: var(--theme-color);
+}
+
+main .ct-loading .url {
+  color: #767676;
+}
+
+main .ct-loading .copy {
+  color: var(--theme-color);
+  cursor: pointer;
+}
+
+main .ct-pros {
+  margin-top: 50px;
+}
+
+main .ct-pros h2 {
+  font-size: 32px;
+  text-align: center;
+}
+
+main .ct-pros ul {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+}
+
+main .ct-pros li {
+  flex: 1;
+  margin: 0 20px;
+}
+
+main .ct-pros [class^="icon-"] {
+  font-size: 60px;
+  color: var(--theme-color);
+}
+
+main .ct-pros h3 {
+  font-size: 30px;
+}
+
+main .ct-pros p {
+  text-align: left;
+  color: #767676;
+}
+
+footer {
+  margin-top: 50px;
+  padding: 10px;
+  background-color: var(--bg-color);
+  color: #f2f2f2;
+  font-size: 14px;
+  text-align: center;
+}
+
+footer a {
+  color: #f2f2f2;
+}
+
+

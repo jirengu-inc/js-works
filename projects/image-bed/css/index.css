@@ -1,0 +1,93 @@
+:root {
+  --theme-color: #00aa3a;
+  --background-color: #333;
+  --body-padding: 32px;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  margin: 0;
+  font: 16px/1.67 Arial, sans-serif;
+  color: #222;
+}
+
+
+header {
+  display: flex;
+  align-items: center;
+  padding: 10px var(--body-padding);
+  background: var(--background-color);
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+}
+
+header .logo > img {
+  height: 22px;
+}
+
+header nav {
+  margin-left: 30px;
+}
+
+header nav > a {
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-left: 30px;
+}
+
+header .setting {
+  margin-left: auto;
+  color: #fff;
+}
+
+
+main {
+  padding: 0 var(--body-padding);
+}
+
+main .ct-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 700px;
+  margin: 50px auto 0 auto;
+  padding: 20px;
+  border: 1px dashed #666;
+  border-radius: 4px;
+  color: #666;
+  line-height: 1.2;
+}
+
+main .ct-upload .icon-cloud {
+  font-size: 80px;
+}
+
+main .ct-upload p {
+  margin: 10px 0 0 0;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+main .ct-upload .text-lesser {
+  margin: 10px;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+main .ct-loading {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+main .ct-loading .list-all {
+  margin-left: auto;
+  color: var(--theme-color);
+}
